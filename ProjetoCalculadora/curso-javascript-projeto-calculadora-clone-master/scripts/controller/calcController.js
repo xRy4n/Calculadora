@@ -63,9 +63,36 @@ class CalcController{
 
     }
 
-    addOperator(value){
+    setLastOperation(value){
+        this._operation[this._operation.length-1] = value;
+    }
+
+    isOperator(value){
+        //verificar se o "value" esta no array abaixo
+        ['+', '-', '*', '%', '/'].indexOf(value)
+    }
+
+    addOperation(value){
+
+        if (isNaN(this.getLastOperation())){
+            //String
+            if(this.isOperator(value)){
+                //operador
+                this.setLastOperation(value);
+            } else if(isNaN(value)){
+                //Outra coisa
+                console.log(value);
+            } else{
+                this._operation.push(value);
+
+            }
+            
+        }else{
+            //Number
+            let newValue = this.getLastOperation().toString() + value.toString();
+            this.setLastOperation(parseInt(newValue));
+        }
         //metodo Push ADD item array
-        this._operation.push(value);
 
         console.log(this._operation);
 
@@ -87,23 +114,27 @@ class CalcController{
             break;
 
             case 'soma':
-                
+                this.addOperation('+');
             break;
-
-            case 'subtracao':
                 
+            case 'subtracao':
+                this.addOperation('-');
+
             break;
 
             case 'divisao':
-               
+                this.addOperation('/');
+ 
             break;
 
             case 'multiplicacao':
-                
+                this.addOperation('*');
+
             break;
             
             case 'porcento':
-               
+                this.addOperation('%');
+
             break;
 
             case 'igual':
@@ -111,7 +142,8 @@ class CalcController{
             break;
 
             case 'ponto':
-                
+                this.addOperation('.');
+
             break;
 
             case '0':
@@ -124,7 +156,7 @@ class CalcController{
             case '7':
             case '8':
             case '9': 
-                this.addOperator(parseInt(value));
+                this.addOperation(parseInt(value));
                 break;  
 
             default:
